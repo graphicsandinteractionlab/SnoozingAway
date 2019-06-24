@@ -5,6 +5,14 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
+
+/*
+ Das ist hier erstmal so wie man es nicht machen soll: alles in einem Skript 
+
+eine Voxelstruktur in der die Charaktere sich bewegen. 
+
+ */
+
 public class Cuboid : MonoBehaviour
 {
     [System.Serializable]
@@ -36,6 +44,9 @@ public class Cuboid : MonoBehaviour
     // store cell data - temporary storage also for editor
     private string cellDataFile = "/cells.dat";
 
+    private Vector3 [] cameraPoints;
+    private int currentCameraPos = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,30 +58,80 @@ public class Cuboid : MonoBehaviour
         for(int i = 0; i < cells.Length;i++) {
             cells[i] = new Cell();
         }
+
+        var zoom  = 2.0f;
+
+        var camDist = new Vector3(dimensions.x * cellSize * zoom,
+            dimensions.x * cellSize * zoom,
+            dimensions.x * cellSize * zoom);
+
+        cameraPoints = new Vector3[6];
+        cameraPoints[0] = Vector3.Scale(Vector3.forward,camDist);
+        cameraPoints[1] = Vector3.Scale(Vector3.back,camDist);
+        cameraPoints[2] = Vector3.Scale(Vector3.left,camDist);
+        cameraPoints[3] = Vector3.Scale(Vector3.right,camDist);
+        cameraPoints[4] = Vector3.Scale(Vector3.up,camDist);
+        cameraPoints[5] = Vector3.Scale(Vector3.down,camDist);
     }
 
     // Update is called once per frame
     void Update()
     {
+        // get the target position
+        var target = cameraPoints[currentCameraPos];
 
+        // transform update only if we haven't reached the point
+        var delta = Camera.main.transform.position - target;
+
+        // never compare on 0 with FP ;) - remember PROG1 
+        // this should be Mathf.Epsilion: thanks Unity for breaking this convention
+        if (delta.sqrMagnitude > 0.1F) { 
+ 
+            // can make the 'woopiness' adjustable with last parameter of slerp
+            Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position,target,0.4f);
+            Camera.main.transform.LookAt(Vector3.zero,Vector3.up);
+    
+        }
+
+
+        // this should go into some update cursor method ...
         var updatedCursorPos = cursor.pos;
 
-        // generate random input
+        // generate random world
         if (Input.GetKeyUp(KeyCode.G))
         {
             Randomize();
             UpdateVisuals();
+        } else if (Input.GetKeyUp(KeyCode.C)) {
+            // toggle cursor
+            cursor.enabled = !cursor.enabled;
         }
+        // save stuff
         else if (Input.GetKeyUp(KeyCode.S))
         {
             Save();
         }
+        // read and visualize
         else if (Input.GetKeyUp(KeyCode.R))
         {
             Read();
             UpdateVisuals();
-            // cursor
         }
+        /* view points */
+        else if (Input.GetKeyDown(KeyCode.Alpha0)) {
+            currentCameraPos = 0;
+        } else if (Input.GetKeyDown(KeyCode.Alpha1)) {
+            currentCameraPos = 1;
+        } else if (Input.GetKeyDown(KeyCode.Alpha2)) {
+            currentCameraPos = 2;
+        } else if (Input.GetKeyDown(KeyCode.Alpha3)) {
+            currentCameraPos = 3;
+        } else if (Input.GetKeyDown(KeyCode.Alpha4)) {
+            currentCameraPos = 4;
+        } else if (Input.GetKeyDown(KeyCode.Alpha5)) {
+            currentCameraPos = 5;
+        }
+        /* minimal editor */
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             updatedCursorPos += dimensions.x;
@@ -82,7 +143,6 @@ public class Cuboid : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             updatedCursorPos += 1;
-
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -102,6 +162,8 @@ public class Cuboid : MonoBehaviour
             cells[cursor.pos].enabled = !cells[cursor.pos].enabled;
             UpdateVisuals();
         }
+
+        cursorShape.GetComponent<Renderer>().enabled = cursor.enabled;
 
         // clamp
         cursor.pos = Mathf.Clamp(updatedCursorPos,0,cells.Length-1);
