@@ -16,18 +16,20 @@ eine Voxelstruktur in der die Charaktere sich bewegen.
 public class Cuboid : MonoBehaviour
 {
     [System.Serializable]
-    protected class Cell
+    public class Cell
     {
         // state 
         public bool enabled = false;
         // model
         public int code = 0;
+
+        bool[] walkable = {false, false, false, false, false, false};
     }
 
     protected class Cursor {
         public int pos = 0;
         public int code = 0;
-        public bool enabled = true;
+        public bool enabled = false;
     }
 
 
@@ -39,7 +41,7 @@ public class Cuboid : MonoBehaviour
     public Vector3Int dimensions = new Vector3Int(10, 10, 10);
     public float cellSize = 2.0f;
 
-    private Cursor cursor = new Cursor();
+    private Cursor EditorCursor = new Cursor();
 
     // store cell data - temporary storage also for editor
     private string cellDataFile = "/cells.dat";
@@ -72,6 +74,11 @@ public class Cuboid : MonoBehaviour
         cameraPoints[3] = Vector3.Scale(Vector3.right,camDist);
         cameraPoints[4] = Vector3.Scale(Vector3.up,camDist);
         cameraPoints[5] = Vector3.Scale(Vector3.down,camDist);
+
+        Read();
+
+        UpdateVisuals();
+
     }
 
     // Update is called once per frame
@@ -93,10 +100,13 @@ public class Cuboid : MonoBehaviour
     
         }
 
-
         // this should go into some update cursor method ...
-        var updatedCursorPos = cursor.pos;
+        var updatedCursorPos = EditorCursor.pos;
 
+        // general stuff
+        if (Input.GetKeyUp(KeyCode.Q)) {
+            Application.Quit();
+        } else 
         // generate random world
         if (Input.GetKeyUp(KeyCode.G))
         {
@@ -104,7 +114,7 @@ public class Cuboid : MonoBehaviour
             UpdateVisuals();
         } else if (Input.GetKeyUp(KeyCode.C)) {
             // toggle cursor
-            cursor.enabled = !cursor.enabled;
+            EditorCursor.enabled = !EditorCursor.enabled;
         }
         // save stuff
         else if (Input.GetKeyUp(KeyCode.S))
@@ -158,24 +168,20 @@ public class Cuboid : MonoBehaviour
         }
         else if (Input.GetKeyUp(KeyCode.Space))
         {
-            cells[cursor.pos].code = cursor.code;
-            cells[cursor.pos].enabled = !cells[cursor.pos].enabled;
+            cells[EditorCursor.pos].code = EditorCursor.code;
+            cells[EditorCursor.pos].enabled = !cells[EditorCursor.pos].enabled;
             UpdateVisuals();
         }
 
-        cursorShape.GetComponent<Renderer>().enabled = cursor.enabled;
+        // just in case
+        cursorShape.GetComponent<Renderer>().enabled = EditorCursor.enabled;
 
         // clamp
-        cursor.pos = Mathf.Clamp(updatedCursorPos,0,cells.Length-1);
-
-        // get midpoint of structure
-        Vector3 midPoint = new Vector3(dimensions.x * cellSize * 0.5f,
-            dimensions.y * cellSize * 0.5f,
-            dimensions.z * cellSize * 0.5f);
+        EditorCursor.pos = Mathf.Clamp(updatedCursorPos,0,cells.Length-1);
 
         // visualize cursor if applicable
-        var pos_i = GetPosition(cursor.pos, dimensions);
-        Vector3 p = (Vector3)pos_i * cellSize - midPoint;
+        var pos_i = GetPosition(EditorCursor.pos, dimensions);
+        Vector3 p = (Vector3)pos_i * cellSize - CenterPoint;
 
         cursorShape.transform.localPosition = p;
     }
@@ -183,10 +189,10 @@ public class Cuboid : MonoBehaviour
     void Randomize()
     {
         // just for debugging
-        for (int i = 0; i < cells.Length; i++)
+        foreach(Cell c in cells)
         {
-            cells[i].code = Random.Range(0, cellObjects.Length);
-            cells[i].enabled = true;
+            c.code = Random.Range(0, cellObjects.Length);
+            c.enabled = true;
         }
     }
 
@@ -195,18 +201,15 @@ public class Cuboid : MonoBehaviour
         // delete all children
         gameObject.DeleteAllChildren();
 
-        // get midpoint of structure
-        Vector3 midPoint = new Vector3(dimensions.x * cellSize * 0.5f,
-            dimensions.y * cellSize * 0.5f,
-            dimensions.z * cellSize * 0.5f);
-
         // build visual representation
         for (int i = 0; i < cells.Length; i++)
         {
-            if (cells[i].enabled) {
+            if (cells[i].enabled) 
+            {
+
                 var pos_i = GetPosition(i, dimensions);
 
-                Vector3 p = (Vector3)pos_i * cellSize - midPoint;
+                Vector3 p = (Vector3)pos_i * cellSize - CenterPoint;
 
                 var item = cellObjects[cells[i].code];
 
@@ -215,6 +218,7 @@ public class Cuboid : MonoBehaviour
                     var cellObject = Instantiate(item, p, Quaternion.identity);
 
                     cellObject.transform.parent = transform;
+                    // cellObject.transform.localPosition = p;
 
                     cellObject.name = "cell_" + pos_i.x + "_" + pos_i.y + "_" + pos_i.z;
                 }
@@ -236,7 +240,7 @@ public class Cuboid : MonoBehaviour
         file.Close();
     }
 
-    void Read()
+    bool Read()
     {
 
         string dataPath = Application.persistentDataPath + cellDataFile;
@@ -250,7 +254,7 @@ public class Cuboid : MonoBehaviour
         else
         {
             Debug.LogError("File not found");
-            return;
+            return false;
         }
 
         BinaryFormatter bf = new BinaryFormatter();
@@ -258,6 +262,39 @@ public class Cuboid : MonoBehaviour
         cells = (Cell[])bf.Deserialize(file);
 
         file.Close();
+
+        return true;
+    }
+
+    public int CellCount 
+    {
+        get { return dimensions.x * dimensions.y * dimensions.z; }
+    }
+
+    public int GetEnabledCount {
+        get { 
+            int count = 0;
+            foreach(Cell c in cells) if (c.enabled) count++;
+            return count; 
+        }
+    }
+
+    public Cell[] Cells
+    {
+        get { return cells; } 
+    }
+
+    public Vector3Int Dimensions
+    {
+        get { return dimensions; }
+    }
+
+    public Vector3 CenterPoint 
+    {
+
+        get { return new Vector3(dimensions.x * cellSize * 0.5f,
+                dimensions.y * cellSize * 0.5f,
+                dimensions.z * cellSize * 0.5f); }
     }
 
     static int GetOffset(Vector3Int pos, Vector3Int dim)
@@ -265,7 +302,7 @@ public class Cuboid : MonoBehaviour
         return pos.x + pos.y * dim.x + pos.z * dim.x * dim.y;
     }
 
-    static Vector3Int GetPosition(int idx, Vector3Int dim)
+    public static Vector3Int GetPosition(int idx, Vector3Int dim)
     {
         return new Vector3Int(idx % dim.x, (idx / dim.x) % dim.y, idx / (dim.x * dim.y));
     }

@@ -156,69 +156,113 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 120883177}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.4556694, y: -2.32684, z: -5.8480873}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &608310899
+--- !u!1001 &326866061
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 640915920}
     m_Modifications:
-    - target: {fileID: 100000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
+    - target: {fileID: 100002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
       propertyPath: m_Name
-      value: Snoozer-Walking
+      value: Suzanne
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.00010042682
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.3137161
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.016552178
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
-      propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
+    - target: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 963fab5e434b76a4b97910410ee04333, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: c30a694204b134b05ad2124f4f3d428e, type: 3}
+--- !u!1 &640915919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 640915920}
+  - component: {fileID: 640915921}
+  m_Layer: 0
+  m_Name: Snoozer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &640915920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640915919}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1694263509}
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &640915921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 640915919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69509be3cd53443c5a23e12490ee5f4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &757746093
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -351,6 +395,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!4 &1694263509 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400002, guid: c30a694204b134b05ad2124f4f3d428e,
+    type: 3}
+  m_PrefabInstance: {fileID: 326866061}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1858488996
 GameObject:
   m_ObjectHideFlags: 0
