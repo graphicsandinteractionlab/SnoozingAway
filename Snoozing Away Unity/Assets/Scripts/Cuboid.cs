@@ -47,7 +47,7 @@ public class Cuboid : MonoBehaviour
     private string cellDataFile = "/cells.dat";
 
     private Vector3 [] cameraPoints;
-    private int currentCameraPos = 0;
+    private int currentCameraPos = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -91,10 +91,10 @@ public class Cuboid : MonoBehaviour
         var delta = Camera.main.transform.position - target;
 
         // never compare on 0 with FP ;) - remember PROG1 
-        // this should be Mathf.Epsilion: thanks Unity for breaking this convention
+        // this should be Mathf.Epsilon: thanks Unity for breaking this convention
         if (delta.sqrMagnitude > 0.1F) { 
  
-            // can make the 'woopiness' adjustable with last parameter of slerp
+            // can make the 'whoopiness' adjustable with last parameter of slerp
             Camera.main.transform.position = Vector3.Slerp(Camera.main.transform.position,target,0.4f);
             Camera.main.transform.LookAt(Vector3.zero,Vector3.up);
     
