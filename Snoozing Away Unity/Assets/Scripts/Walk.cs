@@ -20,6 +20,9 @@ public class Walk : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         cuboid = FindObjectOfType<Cuboid>();
+
+        Reset();
+
     }
 
     // Update is called once per frame
@@ -28,14 +31,28 @@ public class Walk : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.J))
         {
             Reset();
+
         } else if (Input.GetKeyUp(KeyCode.A)) {
             currentSide = (currentSide + 1) % sideDirections.Length;
             Debug.Log("Side:" + currentSide);
         }
 
+        // internal stuff
+        UpdateObstacles();
+
         // update transforms
         UpdateVisuals();
 
+    }
+
+
+    void UpdateObstacles()
+    {
+
+        Debug.DrawRay(transform.position, transform.rotation * Vector3.forward * cuboid.cellSize, Color.yellow);
+        Debug.DrawRay(transform.position, transform.rotation * Vector3.down * cuboid.cellSize, Color.blue);
+
+        // Physics.Raycast(gameObject.transform.position,Vector3.forward,cuboid.cellSize * 2);
     }
 
     void UpdateVisuals()
@@ -48,8 +65,9 @@ public class Walk : MonoBehaviour
         // initial position from this point out we should cast the rays 
         Vector3 worldPos = (Vector3)Cuboid.GetPosition(currentPos,cuboid.Dimensions) * cuboid.cellSize - cuboid.CenterPoint;
 
+        // 
         gameObject.transform.localPosition = worldPos + sideVector * cuboid.cellSize; // basically we occupy the other cell
-        gameObject.transform.localRotation = Quaternion.LookRotation(sideVector);
+        gameObject.transform.localRotation = Quaternion.Inverse(Quaternion.LookRotation(sideVector));
 
     }
 
