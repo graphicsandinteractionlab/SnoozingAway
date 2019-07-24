@@ -49,14 +49,17 @@ public class Walk : MonoBehaviour
     void UpdateObstacles()
     {
 
-        Debug.DrawRay(transform.position, transform.rotation * Vector3.forward * cuboid.cellSize, Color.yellow);
-        Debug.DrawRay(transform.position, transform.rotation * Vector3.down * cuboid.cellSize, Color.blue);
+        Debug.DrawRay(transform.position, transform.localRotation * Vector3.forward * cuboid.cellSize, Color.yellow);
+        // Debug.DrawRay(transform.position, Quaternion.Inverse(transform.rotation) * Vector3.down * cuboid.cellSize, Color.blue);
 
+        // get floor hit
         RaycastHit hit;
 
-        // Physics.Raycast(gameObject.transform.position,Vector3.forward,cuboid.cellSize * 2,out hit);
+        if (Physics.Raycast(gameObject.transform.position,Vector3.down  * cuboid.cellSize,out hit,cuboid.cellSize * 2.0f)) {
 
-        // hit.normal;
+            Debug.Log(hit.normal);
+
+        }
     }
 
     void UpdateVisuals()
