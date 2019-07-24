@@ -49,7 +49,7 @@ public class Walk : MonoBehaviour
     void UpdateObstacles()
     {
 
-        Debug.DrawRay(transform.position, transform.localRotation * Vector3.forward * cuboid.cellSize, Color.yellow);
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * cuboid.cellSize, Color.yellow);
         // Debug.DrawRay(transform.position, Quaternion.Inverse(transform.rotation) * Vector3.down * cuboid.cellSize, Color.blue);
 
         // get floor hit
