@@ -52,7 +52,11 @@ public class Walk : MonoBehaviour
         Debug.DrawRay(transform.position, transform.rotation * Vector3.forward * cuboid.cellSize, Color.yellow);
         Debug.DrawRay(transform.position, transform.rotation * Vector3.down * cuboid.cellSize, Color.blue);
 
-        // Physics.Raycast(gameObject.transform.position,Vector3.forward,cuboid.cellSize * 2);
+        RaycastHit hit;
+
+        // Physics.Raycast(gameObject.transform.position,Vector3.forward,cuboid.cellSize * 2,out hit);
+
+        // hit.normal;
     }
 
     void UpdateVisuals()
